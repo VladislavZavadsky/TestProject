@@ -4,31 +4,31 @@ import java.util.List;
 
 public class ConcatCheck {
     private List<String> list;
-    private int i = 0;
+    private int k = 0;
 
-    public boolean isConcat(String iLine) {
-        // checking if word ended
-        if(iLine.length()<1)
+    public boolean isConcat(StringBuilder inputLine) {
+
+        if(inputLine.length() == 0)
             return true;
 
-        StringBuffer str = new StringBuffer(iLine);
+        StringBuilder buffer = new StringBuilder();
 
-        for (String word : list){
-            if(!word.equals("")) // checking if word isn`t absent
-
-                if(!word.equals(str.toString()) || i>0) // checking if it isn`t the same (first time)
-
-                    if(str.toString().startsWith(word)) { // checking if str starts with word
-                        str.delete(0, word.length());     // while true - delete first word
-                        i++;
-                        if(isConcat(str.toString())){     // checking rest parts
-                            i--;
-                            return true;
-                        } else {
-                            str.insert(0,word);           // back to previous word
-                            i--;
-                        }
+        for(int i = 2; i <= inputLine.length(); i++){
+            buffer.append(inputLine, 0, i);
+            if(list.contains(buffer.toString()) && (!buffer.toString().equals(inputLine.toString()) || k > 0)){
+                inputLine.delete(0,buffer.length());
+                k++;
+                if(isConcat(inputLine)){
+                    k = 0;
+                    return true;
+                } else {
+                    k--;
+                    inputLine.insert(0,buffer);
+                    buffer.delete(0,buffer.length());
                 }
+            } else {
+                buffer.delete(0,buffer.length());
+            }
         }
         return false;
     }
